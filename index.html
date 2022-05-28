@@ -2,12 +2,23 @@
 <html>
     <head>
         <title> Todo App </title>
-        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="./styles/styles.css">
         <link href="https://fonts.googleapis.com/css?family=Indie+Flower|Lobster" rel="stylesheet">
         <script src="https://kit.fontawesome.com/1ff5291ea3.js" crossorigin="anonymous" async></script> <!--importing fontawesome icons-->
         <script src="./script.js" defer></script>
     </head>
     <body>
-        
+        <section class="main-content">
+            <section class="menu">
+                <div class="search-bar">
+                    <input type="text" id="search" placeholder="Search..." name="search">
+                    <div id="search-icon"> <i class="fa-solid fa-magnifying-glass"></i> </div>
+                </div>
+                <div id="date-sort"><i class="fa-solid fa-calendar-day"></i> Sort by date created</div>
+                <div id="points-sort"><i class="fa-solid fa-star"></i> Sort by points</div>
+                <div id="active-todos"><i class="fa-solid fa-circle-exclamation"></i> Active Todos</div>
+                <div id="active-todos"><i class="fa-solid fa-circle-check"></i> Done Todos</div>
+            </section>
+        </section>
     </body>
 </html>
