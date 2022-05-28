@@ -5,26 +5,52 @@
         <link rel="stylesheet" href="./styles/styles.css">
         <link href="https://fonts.googleapis.com/css?family=Indie+Flower|Lobster" rel="stylesheet">
         <script src="https://kit.fontawesome.com/1ff5291ea3.js" crossorigin="anonymous" async></script> <!--importing fontawesome icons-->
-        <script src="./script.js" defer></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="./script/main.js" defer></script>
     </head>
     <body>
-        <section class="body-container">
-            <section class="menu">
+        <div class="body-container">
+            <div class="menu">
                 <div class="search-bar">
                     <input type="text" id="search" placeholder="Search..." name="search">
                     <div id="search-icon"> <i class="fa-solid fa-magnifying-glass"></i> </div>
                 </div>
-                <div id="date-sort"><i class="fa-solid fa-calendar-day"></i> Sort by date created</div>
+                <div id="date-sort"><i class="fa-solid fa-calendar-day"></i> Sort by date</div>
                 <div id="points-sort"><i class="fa-solid fa-star"></i> Sort by points</div>
-                <div id="active-button"><i class="fa-solid fa-circle-exclamation"></i> Active Todos</div>
-                <div id="done-button"><i class="fa-solid fa-circle-check"></i> Done Todos</div>
-            </section>
-            <section class="main-content">
+                <div id="active-button"><i class="fa-solid fa-circle-exclamation"></i> Active To-dos</div>
+                <div id="done-button"><i class="fa-solid fa-circle-check"></i> Done To-dos</div>
+            </div>
+            <div class="main-content">
                 <div class="header">
-                    <h1> Todos </h1>
+                    <h1> To-dos List </h1>
                     <h2> 28/5/2022 </h2>
                 </div>
-            </section>
-        </section>
+                <div id="active" class="todos-list">
+                    <div class="todo">
+                        <div class="todo-container">
+                            <div>
+                                <input type="checkbox" id="done-checkbox" name="todo-done">
+                            </div>
+                            <div class="todo-content">
+                                <div class="id-delete-container">
+                                    <p> 123 </p>
+                                    <i id="delete" class="fa-solid fa-trash"></i>
+                                </div>
+                                <textarea class="title" placeholder="Title..."></textarea>
+                                <textarea class="description" placeholder="Description..."></textarea>
+                                <div>
+                                    <input type="radio" id="1" name="points" value="1">
+                                    <input type="radio" id="2" name="points" value="2">
+                                    <input type="radio" id="3" name="points" value="3">
+                                    <input type="radio" id="4" name="points" value="4">
+                                    <input type="radio" id="5" name="points" value="5">
+                                </div>
+                                <p> 28/5/2022</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>    
+        </div>
     </body>
 </html>
