@@ -46,4 +46,34 @@ function saveTodo() {
   let new_todo = [id, title, description, points, date_created, false];
   $todos_array.push(new_todo);
   $(".create").remove();
+  displayTodos();
 }
+
+function displayTodos() {
+  $todos_array.forEach((element) => {
+    $todo_item = `<div class="todo">
+    <div class="todo-container">
+        <div class="todo-content">
+            <div class="id-delete-container">
+                <p> ${element[0]} </p>
+                <i id="delete" class="fa-solid fa-trash"></i>
+            </div>
+            <textarea class="title" placeholder="Title..."> ${element[1]}</textarea>
+            <textarea class="description" placeholder="Description...">  ${element[2]} </textarea>
+            <div>
+                <input type="radio" name="points" value="1">
+                <input type="radio" name="points" value="2">
+                <input type="radio" name="points" value="3">
+                <input type="radio" name="points" value="4">
+                <input type="radio" name="points" value="5">
+            </div>
+            <p> ${element[4]}</p>
+        </div>
+    </div>
+  </div>`;
+    $("#active").append($todo_item);
+    $(`input[name=points][value=${element[3]}]`).prop("checked", true);
+  });
+}
+
+displayTodos();

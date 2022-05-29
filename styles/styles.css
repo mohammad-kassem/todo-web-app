@@ -92,7 +92,7 @@ body{
     display: none;
 }
 
-.add-todo-container{
+#add-todo-container{
     margin: 1vh 5%;
     padding: 1vh 0;
     border-bottom: 2px solid #c5c5c5;
