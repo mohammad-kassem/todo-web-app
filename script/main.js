@@ -1,4 +1,4 @@
-let todos = [];
+$todos_array = [];
 
 $("#add-todo-button").click(function () {
   if ($(".create")) {
@@ -28,4 +28,22 @@ $("#add-todo-button").click(function () {
   $("#cancel").click(function () {
     $(".create").remove();
   });
+  $("#save-todo").click(saveTodo);
 });
+
+function saveTodo() {
+  let title = $("#title").val();
+  let description = $("#description").val();
+  let points = $('input[name="points"]:checked').val();
+  let id = Math.ceil(Math.random() * 10);
+  let date = new Date();
+  let date_created =
+    String(date.getDate()) +
+    "/" +
+    String(date.getMonth()) +
+    "/" +
+    String(date.getFullYear());
+  let new_todo = [id, title, description, points, date_created, false];
+  $todos_array.push(new_todo);
+  $(".create").remove();
+}
