@@ -61,12 +61,15 @@ function displayTodos() {
       String(element[4].getHours()) +
       ":" +
       String(element[4].getMinutes());
-    $todo_item = `<div class="todo">
+    $todo_item = `<div id = ${element[0]} class="todo">
     <div class="todo-container">
+      <div>
+        <input type="checkbox" name="todo-done">
+      </div>
         <div class="todo-content">
             <div class="id-delete-container">
                 <p> ${element[0]} </p>
-                <i id="delete" class="fa-solid fa-trash"></i>
+                <i class="fa-solid fa-trash"></i>
             </div>
             <textarea class="title" placeholder="Title..."> ${element[1]}</textarea>
             <textarea class="description" placeholder="Description...">  ${element[2]} </textarea>
@@ -86,6 +89,34 @@ function displayTodos() {
       "checked",
       true
     );
+    $(".fa-trash").click(function () {
+      $todo_id = $(this).parent().parent().parent().parent().attr("id");
+      $(this).parent().parent().parent().parent().remove();
+      for (let i = 0; i < n; i++) {
+        if ($todos_array[i][0] == $todo_id) {
+          $todos_array.splice(i, 1);
+          console.log($todos_array);
+          break;
+        }
+      }
+    });
+    $("input[name=todo-done]").change(function () {
+      console.log($(this).prop("checked"));
+      if ($(this).prop("checked")) {
+        $todo_removed = $(this).parent().parent().parent();
+        $todo_id = $(this).parent().parent().parent().attr("id");
+        console.log($todo_id);
+        for (let i = 0; i < n; i++) {
+          if ($todos_array[i][0] == $todo_id) {
+            $todos_array[i][5] == true;
+            console.log($todos_array);
+            $todo_removed.remove();
+            $("#done").append($todo_removed);
+            break;
+          }
+        }
+      }
+    });
   });
 }
 
