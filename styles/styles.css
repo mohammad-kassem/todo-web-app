@@ -89,7 +89,11 @@ body{
 }
 
 #done{
-    display: none;
+    display: block;
+}
+
+#done > .todo{
+    background-color: #c5c5c5;
 }
 
 #add-todo-container{

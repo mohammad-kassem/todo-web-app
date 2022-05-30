@@ -1,4 +1,18 @@
+keys = Object.keys(localStorage);
+
 $todos_array = [];
+for (i of keys) {
+  $value = localStorage.getItem(i);
+  $value = $value.split(",");
+  $value[1] = Number($value[1]);
+  $value[3] = Number($value[3]);
+  $value[4] = new Date($value[1]);
+  $value[5] = $value === "true";
+  $todos_array.push($value);
+}
+
+console.log($todos_array);
+
 $is_sorted_by_date = true;
 $is_sorted_by_points = false;
 
@@ -39,6 +53,7 @@ function saveTodo() {
   let points = $('input[name="points"]:checked').val();
   let id = Math.ceil(Math.random() * 1000);
   let date = new Date();
+  console.log(typeof date);
   let new_todo = [id, title, description, points, date, false];
   $todos_array.push(new_todo);
   $(".create").remove();
@@ -84,44 +99,52 @@ function displayTodos() {
         </div>
     </div>
   </div>`;
-    $("#active").append($todo_item);
+    if (!element[5]) {
+      $("#active").append($todo_item);
+    } else {
+      $("#done").append($todo_item);
+    }
+
     $(`input[name=points${element[0]}][value=${element[3]}]`).prop(
       "checked",
       true
     );
+
     $(".fa-trash").click(function () {
       $todo_id = $(this).parent().parent().parent().parent().attr("id");
       $(this).parent().parent().parent().parent().remove();
       for (let i = 0; i < n; i++) {
         if ($todos_array[i][0] == $todo_id) {
           $todos_array.splice(i, 1);
-          console.log($todos_array);
+          updateLocalStorage();
           break;
         }
       }
     });
-    $("input[name=todo-done]").change(function () {
-      console.log($(this).prop("checked"));
+
+    $(`#${element[0]} input[name=todo-done]`).change(function () {
       if ($(this).prop("checked")) {
-        $todo_removed = $(this).parent().parent().parent();
+        $todo_done = $(this).parent().parent().parent();
         $todo_id = $(this).parent().parent().parent().attr("id");
         console.log($todo_id);
         for (let i = 0; i < n; i++) {
           if ($todos_array[i][0] == $todo_id) {
-            $todos_array[i][5] == true;
+            $todos_array[i][5] = true;
             console.log($todos_array);
-            $todo_removed.remove();
-            $("#done").append($todo_removed);
+            $todo_done.remove();
+            $("#done").append($todo_done);
+            updateLocalStorage();
             break;
           }
         }
       }
     });
   });
+  updateLocalStorage();
 }
 
 function compareDates(a, b) {
-  return b[4].getTime() - a[4].getTime();
+  return new Date(b[4]).getTime() - new Date(a[4]).getTime();
 }
 
 function comparePoints(a, b) {
@@ -135,6 +158,7 @@ function displayTodosByDate() {
 
 function displayTodosByPoints() {
   $todos_array.sort(comparePoints);
+  console.log($todos_array);
   displayTodos();
 }
 
@@ -153,3 +177,11 @@ $("#points-sort").click(function () {
     displayTodosByPoints();
   }
 });
+
+function updateLocalStorage() {
+  n = $todos_array.length;
+  console.log($todos_array);
+  for (let i = 0; i < n; i++) {
+    localStorage.setItem($todos_array[i][0], $todos_array[i]);
+  }
+}
