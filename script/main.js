@@ -4,10 +4,10 @@ $todos_array = [];
 for (i of keys) {
   $value = localStorage.getItem(i);
   $value = $value.split(",");
-  $value[1] = Number($value[1]);
+  $value[0] = Number($value[0]);
   $value[3] = Number($value[3]);
-  $value[4] = new Date($value[1]);
-  $value[5] = $value === "true";
+  $value[4] = new Date($value[4]);
+  $value[5] = $value[5] == "true";
   $todos_array.push($value);
 }
 
@@ -99,11 +99,8 @@ function displayTodos() {
         </div>
     </div>
   </div>`;
-    if (!element[5]) {
-      $("#active").append($todo_item);
-    } else {
-      $("#done").append($todo_item);
-    }
+    if (!element[5]) $("#active").append($todo_item);
+    else $("#done").append($todo_item);
 
     $(`input[name=points${element[0]}][value=${element[3]}]`).prop(
       "checked",
@@ -111,11 +108,13 @@ function displayTodos() {
     );
 
     $(".fa-trash").click(function () {
+      console.log("hello");
       $todo_id = $(this).parent().parent().parent().parent().attr("id");
       $(this).parent().parent().parent().parent().remove();
       for (let i = 0; i < n; i++) {
         if ($todos_array[i][0] == $todo_id) {
           $todos_array.splice(i, 1);
+          console.log($todos_array);
           updateLocalStorage();
           break;
         }
@@ -131,11 +130,25 @@ function displayTodos() {
           if ($todos_array[i][0] == $todo_id) {
             $todos_array[i][5] = true;
             console.log($todos_array);
-            $todo_done.remove();
             $("#done").append($todo_done);
             updateLocalStorage();
             break;
           }
+        }
+      }
+    });
+
+    $(`input[name = points${element[0]}]`).change(function () {
+      $todo_id = $(this).parent().parent().parent().parent().attr("id");
+      console.log($todo_id);
+      for (let i = 0; i < n; i++) {
+        if ($todos_array[i][0] == $todo_id) {
+          $todos_array[i][3] = $(
+            `input[name="points${element[0]}"]:checked`
+          ).val();
+          console.log($todos_array);
+          updateLocalStorage();
+          break;
         }
       }
     });
@@ -180,8 +193,12 @@ $("#points-sort").click(function () {
 
 function updateLocalStorage() {
   n = $todos_array.length;
-  console.log($todos_array);
+  $is_empty = true;
   for (let i = 0; i < n; i++) {
+    $is_empty = false;
     localStorage.setItem($todos_array[i][0], $todos_array[i]);
+  }
+  if ($is_empty) {
+    localStorage.clear();
   }
 }
