@@ -127,20 +127,25 @@ function displayActiveTodos(search_term = " ") {
     });
 
     $(`#${element[0]} input[name=todo-done]`).change(function () {
-      if ($(this).prop("checked")) {
-        $todo_done = $(this).parent().parent().parent();
-        $todo_id = $(this).parent().parent().parent().attr("id");
-        console.log($todo_id);
-        for (let i = 0; i < n; i++) {
+      $todo_edited = $(this).parent().parent().parent();
+      console.log($todo_edited);
+      $todo_id = $(this).parent().parent().parent().attr("id");
+      for (let i = 0; i < n; i++) {
           if ($todos_array[i][0] == $todo_id) {
-            $todos_array[i][5] = true;
-            console.log($todos_array);
-            $("#done").append($todo_done);
+            if ($(this).prop("checked")){
+              $todos_array[i][5] = true;
+              $todo_edited.addClass("done");
+              $("#done").append($todo_edited);
+          }
+            else{
+              $todos_array[i][5] = false;
+              $todo_edited.removeClass("done");
+              $("#active").append($todo_edited);
+            }
             updateLocalStorage();
             break;
           }
         }
-      }
     });
 
     $(`input[name = points${element[0]}]`).change(function () {
