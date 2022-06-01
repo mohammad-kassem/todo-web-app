@@ -1,5 +1,6 @@
 keys = Object.keys(localStorage);
 
+
 $todos_array = [];
 for (i of keys) {
   $value = localStorage.getItem(i);
@@ -60,7 +61,7 @@ function saveTodo() {
   displayTodosByDate();
 }
 
-function displayActiveTodos() {
+function displayActiveTodos(search_term = " ") {
   n = $todos_array.length;
   for (let i = 0; i < n; i++) {
     $(".todo").remove();
@@ -152,35 +153,12 @@ function displayActiveTodos() {
           ).val();
           console.log($todos_array);
           updateLocalStorage();
+          displayTodosByPoints();
           break;
         }
       }
     });
 
-    $("#search-icon").click(function () {
-      $found_divs = [];
-      $search_text = $("#search").val();
-      console.log($search_text);
-      $(".todo-content").each(function () {
-        $text = $(this).text();
-        if ($text.indexOf($search_text) > -1) {
-          $is_sorted_by_date = false;
-          $is_sorted_by_points = false;
-          $found_id = $(this).parent().parent().attr("id");
-          $found_divs.push($(`#${$found_id}`));
-          if ($(`#checkbox${$found_id}`).is(":checked")){
-            $(`#${$found_id}`).addClass("done");
-          }
-        }
-      });
-
-      $(".todo").remove();
-      $n = $found_divs.length;
-      console.log($found_divs);
-      for (let i = 0; i < n; i++) {
-        $(".main-content").append($found_divs[i]);
-      }
-    });
   });
   updateLocalStorage();
 }
@@ -242,3 +220,32 @@ function updateLocalStorage() {
     localStorage.clear();
   }
 }
+
+$("#search-icon").click(function () {
+  // $found_divs = [];
+  $("#active").show();
+  $("#done").show();
+  $search_text = $("#search").val();
+  console.log($search_text);
+  $(".todo").hide();
+  $(".todo-content").each(function () {
+    $text = $(this).text();
+    if ($text.indexOf($search_text) > -1) {
+      $is_sorted_by_date = false;
+      $is_sorted_by_points = false;
+      $found_id = $(this).parent().parent().attr("id");
+      $(`#${$found_id}`).show();
+      if ($(`#checkbox${$found_id}`).is(":checked")){
+        $(`#${$found_id}`).addClass("done");
+      }
+    }
+  });
+
+  // $n = $found_divs.length;
+  // console.log($found_divs);
+  // for (let i = 0; i < n; i++) {
+  //   $(".main-content").append($found_divs[i]);
+  // }
+});
+
+displayTodosByDate();
