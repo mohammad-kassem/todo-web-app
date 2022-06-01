@@ -102,6 +102,7 @@ function displayActiveTodos() {
     if (!element[5]) $("#active").append($todo_item);
     else {
       $("#done").append($todo_item);
+      $(`#${element[0]}`).addClass("done");
       $(`#checkbox${element[0]}`).prop("checked", true);
     }
 
@@ -167,6 +168,9 @@ function displayActiveTodos() {
           $is_sorted_by_points = false;
           $found_id = $(this).parent().parent().attr("id");
           $found_divs.push($(`#${$found_id}`));
+          if ($(`#checkbox${$found_id}`).is(":checked")){
+            $(`#${$found_id}`).addClass("done");
+          }
         }
       });
 
@@ -223,6 +227,8 @@ $("#points-sort").click(function () {
 $("#done-button").click(function(){
   $("#active").hide();
   $("#done").show();
+  $is_sorted_by_date = false;
+  $is_sorted_by_points = false;
 })
 
 function updateLocalStorage() {

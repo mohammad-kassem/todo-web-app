@@ -91,8 +91,12 @@ body{
 #done{
     display: none;
 }
-
+/* 
 #done > .todo{
+    background-color: #c5c5c5;
+} */
+
+.done{
     background-color: #c5c5c5;
 }
 
