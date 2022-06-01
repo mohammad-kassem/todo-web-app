@@ -60,7 +60,7 @@ function saveTodo() {
   displayTodosByDate();
 }
 
-function displayTodos() {
+function displayActiveTodos() {
   n = $todos_array.length;
   for (let i = 0; i < n; i++) {
     $(".todo").remove();
@@ -79,7 +79,7 @@ function displayTodos() {
     $todo_item = `<div id = ${element[0]} class="todo">
     <div class="todo-container">
       <div>
-        <input type="checkbox" name="todo-done">
+        <input id="checkbox${element[0]}" type="checkbox" name="todo-done">
       </div>
         <div class="todo-content">
             <div class="id-delete-container">
@@ -100,9 +100,12 @@ function displayTodos() {
     </div>
   </div>`;
     if (!element[5]) $("#active").append($todo_item);
-    else $("#done").append($todo_item);
+    else {
+      $("#done").append($todo_item);
+      $(`#checkbox${element[0]}`).prop("checked", true);
+    }
 
-    $(`input[name=points${element[0]}][value=${element[3]}]`).prop(
+    $(`input[name = points${element[0]}][value=${element[3]}]`).prop(
       "checked",
       true
     );
@@ -152,6 +155,28 @@ function displayTodos() {
         }
       }
     });
+
+    $("#search-icon").click(function () {
+      $found_divs = [];
+      $search_text = $("#search").val();
+      console.log($search_text);
+      $(".todo-content").each(function () {
+        $text = $(this).text();
+        if ($text.indexOf($search_text) > -1) {
+          $is_sorted_by_date = false;
+          $is_sorted_by_points = false;
+          $found_id = $(this).parent().parent().attr("id");
+          $found_divs.push($(`#${$found_id}`));
+        }
+      });
+
+      $(".todo").remove();
+      $n = $found_divs.length;
+      console.log($found_divs);
+      for (let i = 0; i < n; i++) {
+        $(".main-content").append($found_divs[i]);
+      }
+    });
   });
   updateLocalStorage();
 }
@@ -166,19 +191,21 @@ function comparePoints(a, b) {
 
 function displayTodosByDate() {
   $todos_array.sort(compareDates);
-  displayTodos();
+  displayActiveTodos();
 }
 
 function displayTodosByPoints() {
   $todos_array.sort(comparePoints);
   console.log($todos_array);
-  displayTodos();
+  displayActiveTodos();
 }
 
 $("#date-sort").click(function () {
   if (!$is_sorted_by_date) {
     $is_sorted_by_date = true;
     $is_sorted_by_points = false;
+    $("#active").show();
+    $("#done").hide();
     displayTodosByDate();
   }
 });
@@ -187,9 +214,16 @@ $("#points-sort").click(function () {
   if (!$is_sorted_by_points) {
     $is_sorted_by_date = false;
     $is_sorted_by_points = true;
+    $("#active").show();
+    $("#done").hide();
     displayTodosByPoints();
   }
 });
+
+$("#done-button").click(function(){
+  $("#active").hide();
+  $("#done").show();
+})
 
 function updateLocalStorage() {
   n = $todos_array.length;

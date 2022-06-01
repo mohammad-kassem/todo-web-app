@@ -89,7 +89,7 @@ body{
 }
 
 #done{
-    display: block;
+    display: none;
 }
 
 #done > .todo{
