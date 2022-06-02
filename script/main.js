@@ -28,8 +28,8 @@ $("#add-todo-button").click(function () {
       </div>
       <div class="todo-content">
           <i id="cancel" class="fa-solid fa-xmark"></i>
-          <textarea id="title" class="title" placeholder="Title..."></textarea>
-          <textarea id="description" class="description" placeholder="Description..."></textarea>
+          <textarea id="title" class="title" placeholder="Title..." ></textarea >
+          <textarea id="description" class="description" placeholder="Description... " ></textarea>
           <div>
               <input type="radio" id="1" name="points" value="1">
               <input type="radio" id="2" name="points" value="2">
@@ -83,20 +83,23 @@ function displayActiveTodos(search_term = " ") {
         <input id="checkbox${element[0]}" type="checkbox" name="todo-done">
       </div>
         <div class="todo-content">
-            <div class="id-delete-container">
+            <div class="inside-content-container">
                 <p> ${element[0]} </p>
                 <i class="fa-solid fa-trash"></i>
             </div>
-            <textarea class="title" placeholder="Title..."> ${element[1]}</textarea>
-            <textarea class="description" placeholder="Description...">  ${element[2]} </textarea>
+            <textarea id="title${element[0]}" class="title" placeholder="Title..." disabled>${element[1]}</textarea>
+            <textarea id="desc${element[0]}" class="description" placeholder="Description..." disabled>${element[2]}</textarea>
             <div>
-                <input type="radio" name= "points${element[0]}"  value="1">
-                <input type="radio" name="points${element[0]}" value="2">
-                <input type="radio" name="points${element[0]}" value="3">
-                <input type="radio" name="points${element[0]}" value="4">
-                <input type="radio" name="points${element[0]}" value="5">
+                <input type="radio" name= "points${element[0]}"  value="1" disabled>
+                <input type="radio" name="points${element[0]}" value="2" disabled>
+                <input type="radio" name="points${element[0]}" value="3" disabled>
+                <input type="radio" name="points${element[0]}" value="4" disabled>
+                <input type="radio" name="points${element[0]}" value="5" disabled>
             </div>
-            <p> ${date_created}</p>
+            <div class = "inside-content-container">
+              <p> ${date_created} </p>
+              <button id="btn${element[0]}" class = "btn"> Edit </button>
+            </div>
         </div>
     </div>
   </div>`;
@@ -111,6 +114,32 @@ function displayActiveTodos(search_term = " ") {
       "checked",
       true
     );
+    
+    $(`#${element[0]} .btn`).click(function(){
+      $(`#${element[0]} textarea`).prop("disabled", false);
+      $(`input[name = points${element[0]}`).prop("disabled", false);
+      console.log($(this).text());
+      $(this).text("Save");
+      $(this).prop("id",`save-changes${element[0]}`);
+      $(`#save-changes${element[0]}`).click(function() {
+        $(`#${element[0]} textarea`).prop("disabled", false);
+        $(`input[name = points${element[0]}`).prop("disabled", false);
+        $(this).prop("id",`edit${element[0]}`);
+        for (let i = 0; i < n; i++) {
+          if ($todos_array[i][0] == element[0]){
+            $todos_array[i][1] = $(`#title${element[0]}`).val();
+            $todos_array[i][2] = $(`#desc${element[0]}`).val();
+            $todos_array[i][3] =  $(`input[name="points${element[0]}"]:checked`
+            ).val();
+            updateLocalStorage();
+            if ($is_sorted_by_points) displayTodosByPoints();
+            else displayActiveTodos();
+            break;
+        }
+      }
+      });
+    });
+
 
     $(".fa-trash").click(function () {
       console.log("hello");
@@ -148,21 +177,21 @@ function displayActiveTodos(search_term = " ") {
         }
     });
 
-    $(`input[name = points${element[0]}]`).change(function () {
-      $todo_id = $(this).parent().parent().parent().parent().attr("id");
-      console.log($todo_id);
-      for (let i = 0; i < n; i++) {
-        if ($todos_array[i][0] == $todo_id) {
-          $todos_array[i][3] = $(
-            `input[name="points${element[0]}"]:checked`
-          ).val();
-          console.log($todos_array);
-          updateLocalStorage();
-          displayTodosByPoints();
-          break;
-        }
-      }
-    });
+    // $(`input[name = points${element[0]}]`).change(function () {
+    //   $todo_id = $(this).parent().parent().parent().parent().attr("id");
+    //   console.log($todo_id);
+    //   for (let i = 0; i < n; i++) {
+    //     if ($todos_array[i][0] == $todo_id) {
+    //       $todos_array[i][3] = $(
+    //         `input[name="points${element[0]}"]:checked`
+    //       ).val();
+    //       console.log($todos_array);
+    //       updateLocalStorage();
+    //       displayTodosByPoints();
+    //       break;
+    //     }
+    //   }
+    // });
 
   });
   updateLocalStorage();
@@ -188,23 +217,21 @@ function displayTodosByPoints() {
 }
 
 $("#date-sort").click(function () {
-  if (!$is_sorted_by_date) {
     $is_sorted_by_date = true;
     $is_sorted_by_points = false;
     $("#active").show();
     $("#done").hide();
     displayTodosByDate();
-  }
+  
 });
 
 $("#points-sort").click(function () {
-  if (!$is_sorted_by_points) {
     $is_sorted_by_date = false;
     $is_sorted_by_points = true;
     $("#active").show();
     $("#done").hide();
     displayTodosByPoints();
-  }
+  
 });
 
 $("#done-button").click(function(){
