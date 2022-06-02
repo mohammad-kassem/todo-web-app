@@ -126,7 +126,6 @@ function displayActiveTodos() {
   </div>`;
     if (!element[5]) $("#active").append($todo_item);
     else {
-      $todo_item.attr("style", " ");
       $("#done").append($todo_item);
       $(`#${element[0]}`).addClass("done");
       $(`#checkbox${element[0]}`).prop("checked", true);
