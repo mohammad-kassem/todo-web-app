@@ -29,7 +29,7 @@ $("#add-todo-button").click(function () {
       </div>
       <div class="todo-content">
           <i id="cancel" class="fa-solid fa-xmark"></i>
-          <div class = "todo-container">
+          <div class = "inside-content-container">
             <textarea id="title" class="title" placeholder="Title..." ></textarea>
             <input type="datetime-local" id="due-date" name="due-date">
           </div>
@@ -269,7 +269,7 @@ function updateLocalStorage() {
   for (let i = 0; i < $n; i++) {
     localStorage.setItem($todos_array[i][0], $todos_array[i]);
   }
-};
+}
 
 $("#search-icon").click(function () {
   // $found_divs = [];
@@ -307,7 +307,7 @@ function checkDueDate(){
     $due_date = Date.parse($due_date_element.text());
     $date_diff = ($due_date - $current_date)/60000;
     if ($date_diff < 60){
-      $(this).css("background-color", "red");
+      $(this).css("background-color", "#f63440");
     }
   })
 
