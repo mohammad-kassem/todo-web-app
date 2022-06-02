@@ -206,5 +206,50 @@ input[type="radio"]:first-child{
 } */
 
 
+@media only screen and (max-width: 762px) {
+    .header{
+        width: 100%;
+    }
 
+    .body-container{
+        flex-direction: column;
+        margin: 0;
+        width: 100%;
+    }
+    .menu{
+        flex-direction: column;
+        width: 100%;
+        margin: 0;
+    }
+    .search-bar{
+        align-self: stretch;
+    }
+
+    .menu-content{
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-between;
+
+    }
+
+    .menu-content > div:first-child{
+        margin-left: 5%;
+    }
+
+    .menu-content > div:last-child{
+        margin-right: 5%;
+    }
+
+    .menu-content > div{
+        margin: 0;
+    }
+
+    .main-content{
+        width: 100%;
+    }
+
+    .search-bar{
+        margin: 5%;
+    }
+}
 
