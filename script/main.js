@@ -41,7 +41,7 @@ $("#add-todo-button").click(function () {
               <input type="radio" id="4" name="points" value="4">
               <input type="radio" id="5" name="points" value="5">
           </div>
-          <button id="save-todo" class="btn"> Save Todo </button>
+          <button id="save-todo" class="btn">Save</button>
       </div>
   </div>
 </div>`;
@@ -102,15 +102,16 @@ function displayActiveTodos() {
       </div>
         <div class="todo-content">
             <div class="inside-content-container">
-                <p> ${element[0]} </p>
+                <p>ID: ${element[0]}</p>
                 <i class="fa-solid fa-trash"></i>
             </div>
             <div class = "inside-content-container">
               <textarea id="title${element[0]}" class="title" placeholder="Title..." disabled>${element[1]}</textarea>
-              <p class="due-date">${due_date}</p>
+              <p class="due-date">Due-Date: ${due_date}</p>
             </div>
             <textarea id="desc${element[0]}" class="description" placeholder="Description..." disabled>${element[2]}</textarea>
             <div>
+                Points:
                 <input type="radio" name= "points${element[0]}"  value="1" disabled>
                 <input type="radio" name="points${element[0]}" value="2" disabled>
                 <input type="radio" name="points${element[0]}" value="3" disabled>
@@ -118,7 +119,7 @@ function displayActiveTodos() {
                 <input type="radio" name="points${element[0]}" value="5" disabled>
             </div>
             <div class = "inside-content-container">
-              <p> ${date_created} </p>
+              <p>Create Date: ${date_created}</p>
               <button id="btn${element[0]}" class = "btn"> Edit </button>
             </div>
         </div>
@@ -271,19 +272,20 @@ function updateLocalStorage() {
   }
 }
 
-$("#search-icon").click(function () {
+$("#search").keyup(function () {
   // $found_divs = [];
   $("#active").show();
   $("#done").show();
   $search_text = $("#search").val();
   console.log($search_text);
   $(".todo").hide();
-  $(".todo-content").each(function () {
+  $("textarea").each(function () {
+    console.log("hello");
     $text = $(this).text();
     if ($text.indexOf($search_text) > -1) {
       $is_sorted_by_date = false;
       $is_sorted_by_points = false;
-      $found_id = $(this).parent().parent().attr("id");
+      $found_id = $(this).parent().parent().parent().parent().attr("id");
       $(`#${$found_id}`).show();
       if ($(`#checkbox${$found_id}`).is(":checked")){
         $(`#${$found_id}`).addClass("done");
@@ -307,7 +309,7 @@ function checkDueDate(){
     $due_date = Date.parse($due_date_element.text());
     $date_diff = ($due_date - $current_date)/60000;
     if ($date_diff < 60){
-      $(this).css("background-color", "#f63440");
+      $(this).addClass("due");
     }
   })
 

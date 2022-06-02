@@ -8,14 +8,14 @@ body{
 }
 
 .header{
-    width: 75%;
+    width: 70%;
     margin: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 150px;
-    background-color: steelblue;
+    background-color: rgb(63, 114, 156);
     vertical-align: text-bottom;
     color: #fff;
 }
@@ -30,7 +30,7 @@ body{
 }
 
 .body-container{
-    width: 75%;
+    width: 70%;
     margin: auto;
     display: flex;
     justify-content: flex-start;
@@ -111,7 +111,7 @@ body{
 }
 
 .due {
-    background-color: red;
+    background-color: rgb(244, 59, 59);
 }
 
 #add-todo-container{
@@ -200,12 +200,13 @@ textarea{
     height: 100px;
 }
 
+
 input[type="radio"]{
     margin: 1vh 3%;
 }
 
 input[type="radio"]:first-child{
-    margin-left: 0;
+    margin-left: 20%;
 }
 
 
