@@ -135,7 +135,6 @@ body{
 .todo{
     margin: 1vh 2.5%;
     padding: 0.5% 2.5%;
-    border-bottom: 2px solid #c5c5c5;
 }
 
 .create{
@@ -153,20 +152,30 @@ body{
 }
 
 .todo-content{
+    display: flex;
+    flex-direction: column;
     width: 90%;
 }
 
 #cancel{
-    float: right;
+    text-align: right;
 }
 
 .btn{
     float: right;
     border-radius: 5px;
     padding: 0.5vw 2vw;
+    text-align: center;
     background-color: limegreen;
     font-weight: 700;
     filter: brightness(1.5);
+    align-self: flex-end;
+}
+
+.btn:disabled{
+    background-color: #c5c5c5;
+    color: black;
+    filter: brightness(0.8);
 }
 
 .inside-content-container{
@@ -183,14 +192,14 @@ textarea{
     border: 2px solid #c5c5c5;
     border-radius: 10px;
     font-size: 14px;
-    padding: 3%;
+    padding: 1%;
     margin: 1vh 0;
     box-sizing: border-box;
 }
 
 .title{
     width: 50%;
-    height: 50px;
+    height: 30px;
     font-size: 14px;
     font-weight: bold;
 }
@@ -207,6 +216,10 @@ input[type="radio"]{
 
 input[type="radio"]:first-child{
     margin-left: 20%;
+}
+
+input[type="radio"]{
+    margin: 1vh 3%;
 }
 
 

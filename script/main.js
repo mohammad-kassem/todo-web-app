@@ -28,12 +28,13 @@ $("#add-todo-button").click(function () {
           <input type="checkbox" name="todo-done" disabled>
       </div>
       <div class="todo-content">
+
           <i id="cancel" class="fa-solid fa-xmark"></i>
           <div class = "inside-content-container">
             <textarea id="title" class="title" placeholder="Title..." ></textarea>
             <input type="datetime-local" id="due-date" name="due-date">
           </div>
-          <textarea id="description" class="description" placeholder="Description... " ></textarea>
+          <textarea id="description" class="description" placeholder="Description... "></textarea>
           <div>
               <input type="radio" id="1" name="points" value="1">
               <input type="radio" id="2" name="points" value="2">
@@ -171,12 +172,12 @@ function displayActiveTodos() {
       $(this).parent().parent().parent().parent().remove();
       for (let i = 0; i < n; i++) {
         if ($todos_array[i][0] == $todo_id) {
-          $todos_array.splice(i, 1);
-          console.log($todos_array);
-          updateLocalStorage();
+          $found_index = i;
           break;
         }
       }
+      $todos_array.splice($found_index, 1);
+      updateLocalStorage();
     });
 
     $(`#${element[0]} input[name=todo-done]`).change(function () {
@@ -275,14 +276,14 @@ function updateLocalStorage() {
 
 $("#search").keyup(function () {
   // $found_divs = [];
+  $(".btn").prop("disabled", false);
   $("#active").show();
   $("#done").show();
-  $search_text = $("#search").val();
+  $search_text = $("#search").val().toUpperCase();
   console.log($search_text);
   $(".todo").hide();
   $("textarea").each(function () {
-    console.log("hello");
-    $text = $(this).text();
+    $text = $(this).text().toUpperCase();
     if ($text.indexOf($search_text) > -1) {
       $is_sorted_by_date = false;
       $is_sorted_by_points = false;
@@ -306,12 +307,12 @@ displayTodosByDate();
 function checkDueDate(){
   $current_date = Date.now();
   $(".todo").each(function (){
+    $(this).removeClass("due");
     $due_date_element = $(this).find(".due-date");
     $due_date = Date.parse($due_date_element.text());
     $date_diff = ($due_date - $current_date)/60000;
     if ($date_diff < 60){
-      if (!$(this).hasClass("done"))
-      $(this).addClass("due");
+      if (!$(this).hasClass("done")) $(this).addClass("due");
     }
   })
 
