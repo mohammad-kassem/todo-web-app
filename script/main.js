@@ -265,14 +265,15 @@ function updateLocalStorage() {
 
 // dynamic search through the search bar by searching by title and description
 $("#search").keyup(function () {
-  $(".btn").prop("disabled", false);
+  // $found_divs = [];
   $("#active").show();
   $("#done").show();
-  $search_text = $("#search").val().toUpperCase();
+  $search_text = $("#search").val();
   console.log($search_text);
   $(".todo").hide();
   $("textarea").each(function () {
-    $text = $(this).text().toUpperCase();
+    console.log("hello");
+    $text = $(this).text();
     if ($text.indexOf($search_text) > -1) {
       $is_sorted_by_date = false;
       $is_sorted_by_points = false;
@@ -283,6 +284,20 @@ $("#search").keyup(function () {
       }
     }
   });
+  $(".description").each(function () {
+    console.log("hello");
+    $text = $(this).text();
+    if ($text.indexOf($search_text) > -1) {
+      $is_sorted_by_date = false;
+      $is_sorted_by_points = false;
+      $found_id = $(this).parent().parent().parent().attr("id");
+      $(`#${$found_id}`).show();
+      if ($(`#checkbox${$found_id}`).is(":checked")){
+        $(`#${$found_id}`).addClass("done");
+      }
+    }
+  });
+
 });
 
 // by defaults when the page is loaded//
