@@ -1,6 +1,6 @@
+
+// getting the data stored in the local storage and placing it in an array//
 keys = Object.keys(localStorage);
-
-
 $todos_array = [];
 for (i of keys) {
   $value = localStorage.getItem(i);
@@ -13,11 +13,11 @@ for (i of keys) {
   $todos_array.push($value);
 }
 
-console.log($todos_array);
-
+//defining global variables//
 $is_sorted_by_date = true;
 $is_sorted_by_points = false;
 
+// create the create-todo div to create a todo//
 $("#add-todo-button").click(function () {
   if ($(".create")) {
     $(".create").remove();
@@ -53,6 +53,7 @@ $("#add-todo-button").click(function () {
   $("#save-todo").click(saveTodo);
 });
 
+//saves the todo and displays the todos including it depending on what option of sorting the user is on//
 function saveTodo() {
   let title = $("#title").val();
   let description = $("#description").val();
@@ -69,7 +70,8 @@ function saveTodo() {
   else displayTodosByDate();
 }
 
-function displayActiveTodos() {
+// pipulates the todos from the local storage into teh DOM and activates their event listeners//
+function displayTodos() {
   n = $todos_array.length;
   for (let i = 0; i < n; i++) {
     $(".todo").remove();
@@ -127,6 +129,8 @@ function displayActiveTodos() {
         </div>
     </div>
   </div>`;
+    // if a todo's status boolean is set to true it is placed under element with id done whhich is hidden by default//
+    // else placed under active //
     if (!element[5]) $("#active").append($todo_item);
     else {
       $("#done").append($todo_item);
@@ -139,6 +143,8 @@ function displayActiveTodos() {
       true
     );
     
+    // clicking the edit button for a todo generates the save button and event listener disabling also all other edit buttons//
+    // after the changes are saved and the todos are re-displayed  and local storage is updated//
     $(`#${element[0]} .btn`).click(function(){
       $(".btn").not(`#${element[0]} .btn`).prop("disabled", true);
       $(`#${element[0]} textarea`).prop("disabled", false);
@@ -165,7 +171,7 @@ function displayActiveTodos() {
       });
     });
 
-
+    //deleting a todo removes it from the dom and local storage//
     $(".fa-trash").click(function () {
       console.log("hello");
       $todo_id = $(this).parent().parent().parent().parent().attr("id");
@@ -180,9 +186,9 @@ function displayActiveTodos() {
       updateLocalStorage();
     });
 
+    // checking or unchecking a todo as done transfers it under its respective div and update the local storage//
     $(`#${element[0]} input[name=todo-done]`).change(function () {
       $todo_edited = $(this).parent().parent().parent();
-      console.log($todo_edited);
       $todo_id = $(this).parent().parent().parent().attr("id");
       for (let i = 0; i < n; i++) {
           if ($todos_array[i][0] == $todo_id) {
@@ -201,23 +207,6 @@ function displayActiveTodos() {
           }
         }
     });
-
-    // $(`input[name = points${element[0]}]`).change(function () {
-    //   $todo_id = $(this).parent().parent().parent().parent().attr("id");
-    //   console.log($todo_id);
-    //   for (let i = 0; i < n; i++) {
-    //     if ($todos_array[i][0] == $todo_id) {
-    //       $todos_array[i][3] = $(
-    //         `input[name="points${element[0]}"]:checked`
-    //       ).val();
-    //       console.log($todos_array);
-    //       updateLocalStorage();
-    //       displayTodosByPoints();
-    //       break;
-    //     }
-    //   }
-    // });
-
   });
   updateLocalStorage();
 }
@@ -232,13 +221,13 @@ function comparePoints(a, b) {
 
 function displayTodosByDate() {
   $todos_array.sort(compareDates);
-  displayActiveTodos();
+  displayTodos();
 }
 
 function displayTodosByPoints() {
   $todos_array.sort(comparePoints);
   console.log($todos_array);
-  displayActiveTodos();
+  displayTodos();
 }
 
 $("#date-sort").click(function () {
@@ -274,8 +263,8 @@ function updateLocalStorage() {
   }
 }
 
+// dynamic search through the search bar by searching by title and description
 $("#search").keyup(function () {
-  // $found_divs = [];
   $(".btn").prop("disabled", false);
   $("#active").show();
   $("#done").show();
@@ -294,16 +283,12 @@ $("#search").keyup(function () {
       }
     }
   });
-
-  // $n = $found_divs.length;
-  // console.log($found_divs);
-  // for (let i = 0; i < n; i++) {
-  //   $(".main-content").append($found_divs[i]);
-  // }
 });
 
+// by defaults when the page is loaded//
 displayTodosByDate();
 
+// compares the current date-time with teh todos date-time//
 function checkDueDate(){
   $current_date = Date.now();
   $(".todo").each(function (){
@@ -318,4 +303,5 @@ function checkDueDate(){
 
 };
 
+//this function continously repeats//
 setInterval(checkDueDate, 100);

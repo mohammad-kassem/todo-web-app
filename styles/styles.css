@@ -101,10 +101,6 @@ body{
 #done{
     display: none;
 }
-/* 
-#done > .todo{
-    background-color: #c5c5c5;
-} */
 
 .done{
     background-color: #c4c4c4;
@@ -221,11 +217,6 @@ input[type="radio"]:first-child{
 input[type="radio"]{
     margin: 1vh 3%;
 }
-
-
-/* .todo-content  p{
-    margin: 1vh 0;
-} */
 
 
 @media only screen and (max-width: 762px) {
