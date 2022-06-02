@@ -126,6 +126,7 @@ function displayActiveTodos() {
   </div>`;
     if (!element[5]) $("#active").append($todo_item);
     else {
+      $todo_item.attr("style", " ");
       $("#done").append($todo_item);
       $(`#${element[0]}`).addClass("done");
       $(`#checkbox${element[0]}`).prop("checked", true);
@@ -264,16 +265,12 @@ $("#done-button").click(function(){
 })
 
 function updateLocalStorage() {
-  n = $todos_array.length;
-  $is_empty = true;
-  for (let i = 0; i < n; i++) {
-    $is_empty = false;
+  localStorage.clear();
+  $n = $todos_array.length;
+  for (let i = 0; i < $n; i++) {
     localStorage.setItem($todos_array[i][0], $todos_array[i]);
   }
-  if ($is_empty) {
-    localStorage.clear();
-  }
-}
+};
 
 $("#search-icon").click(function () {
   // $found_divs = [];
@@ -307,9 +304,7 @@ displayTodosByDate();
 function checkDueDate(){
   $current_date = Date.now();
   $(".todo").each(function (){
-    console.log($(this));
     $due_date_element = $(this).find(".due-date");
-    console.log($due_date_element.text());
     $due_date = Date.parse($due_date_element.text());
     $date_diff = ($due_date - $current_date)/60000;
     if ($date_diff < 60){
@@ -319,4 +314,4 @@ function checkDueDate(){
 
 };
 
-setInterval(checkDueDate, 60000);
+setInterval(checkDueDate, 1000);
