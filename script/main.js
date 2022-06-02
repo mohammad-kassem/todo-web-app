@@ -64,7 +64,8 @@ function saveTodo() {
   let new_todo = [id, title, description, points, date, false, due_date];
   $todos_array.push(new_todo);
   $(".create").remove();
-  displayTodosByDate();
+  if ($is_sorted_by_points) displayTodosByPoints();
+  else displayTodosByDate();
 }
 
 function displayActiveTodos() {
@@ -156,7 +157,7 @@ function displayActiveTodos() {
             ).val();
             updateLocalStorage();
             if ($is_sorted_by_points) displayTodosByPoints();
-            else displayActiveTodos();
+            else displayTodosByDate();
             break;
         }
       }
@@ -309,10 +310,11 @@ function checkDueDate(){
     $due_date = Date.parse($due_date_element.text());
     $date_diff = ($due_date - $current_date)/60000;
     if ($date_diff < 60){
+      if (!$(this).hasClass("done"))
       $(this).addClass("due");
     }
   })
 
 };
 
-setInterval(checkDueDate, 1000);
+setInterval(checkDueDate, 100);
