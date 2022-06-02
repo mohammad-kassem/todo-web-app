@@ -9,6 +9,7 @@ for (i of keys) {
   $value[3] = Number($value[3]);
   $value[4] = new Date($value[4]);
   $value[5] = $value[5] == "true";
+  $value[6] = new Date($value[6]);
   $todos_array.push($value);
 }
 
@@ -28,7 +29,10 @@ $("#add-todo-button").click(function () {
       </div>
       <div class="todo-content">
           <i id="cancel" class="fa-solid fa-xmark"></i>
-          <textarea id="title" class="title" placeholder="Title..." ></textarea >
+          <div class = "todo-container">
+            <textarea id="title" class="title" placeholder="Title..." ></textarea>
+            <input type="datetime-local" id="due-date" name="due-date">
+          </div>
           <textarea id="description" class="description" placeholder="Description... " ></textarea>
           <div>
               <input type="radio" id="1" name="points" value="1">
@@ -54,29 +58,43 @@ function saveTodo() {
   let points = $('input[name="points"]:checked').val();
   let id = Math.ceil(Math.random() * 1000);
   let date = new Date();
+  let due_date = new Date($(`#due-date`).val());
+  console.log(due_date);
   console.log(typeof date);
-  let new_todo = [id, title, description, points, date, false];
+  let new_todo = [id, title, description, points, date, false, due_date];
   $todos_array.push(new_todo);
   $(".create").remove();
   displayTodosByDate();
 }
 
-function displayActiveTodos(search_term = " ") {
+function displayActiveTodos() {
   n = $todos_array.length;
   for (let i = 0; i < n; i++) {
     $(".todo").remove();
   }
   $todos_array.forEach((element) => {
     let date_created =
-      String(element[4].getDate()) +
-      "/" +
       String(element[4].getMonth() + 1) +
+      "/" +
+      String(element[4].getDate()) +
       "/" +
       String(element[4].getFullYear()) +
       " " +
       String(element[4].getHours()) +
       ":" +
       String(element[4].getMinutes());
+    
+    let due_date =
+      String(element[6].getMonth() + 1) +
+      "/" +
+      String(element[6].getDate()) +
+      "/" +
+      String(element[6].getFullYear()) +
+      " " +
+      String(element[6].getHours()) +
+      ":" +
+      String(element[6].getMinutes());
+    console.log(due_date);
     $todo_item = `<div id = ${element[0]} class="todo">
     <div class="todo-container">
       <div>
@@ -87,7 +105,10 @@ function displayActiveTodos(search_term = " ") {
                 <p> ${element[0]} </p>
                 <i class="fa-solid fa-trash"></i>
             </div>
-            <textarea id="title${element[0]}" class="title" placeholder="Title..." disabled>${element[1]}</textarea>
+            <div class = "inside-content-container">
+              <textarea id="title${element[0]}" class="title" placeholder="Title..." disabled>${element[1]}</textarea>
+              <p class="due-date">${due_date}</p>
+            </div>
             <textarea id="desc${element[0]}" class="description" placeholder="Description..." disabled>${element[2]}</textarea>
             <div>
                 <input type="radio" name= "points${element[0]}"  value="1" disabled>
@@ -116,6 +137,7 @@ function displayActiveTodos(search_term = " ") {
     );
     
     $(`#${element[0]} .btn`).click(function(){
+      $(".btn").not(`#${element[0]} .btn`).prop("disabled", true);
       $(`#${element[0]} textarea`).prop("disabled", false);
       $(`input[name = points${element[0]}`).prop("disabled", false);
       console.log($(this).text());
@@ -281,3 +303,20 @@ $("#search-icon").click(function () {
 });
 
 displayTodosByDate();
+
+function checkDueDate(){
+  $current_date = Date.now();
+  $(".todo").each(function (){
+    console.log($(this));
+    $due_date_element = $(this).find(".due-date");
+    console.log($due_date_element.text());
+    $due_date = Date.parse($due_date_element.text());
+    $date_diff = ($due_date - $current_date)/60000;
+    if ($date_diff < 60){
+      $(this).css("background-color", "red");
+    }
+  })
+
+};
+
+setInterval(checkDueDate, 60000);
